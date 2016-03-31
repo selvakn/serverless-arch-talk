@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Lato);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Lato', sans-serif; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      h1 { font-size: 3.5em; }
+      h2 { font-size: 3em; }
+      h3 { font-size: 1.6em; }
+      .sub { font-size: 0.7em; }
+      .super { font-size: 1.5em; }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+
+      pre {
+        border-left: 0.4em solid #d7d7d7;
+        padding: 1em !important;
+      }
+      code {
+        background: transparent !important;
+      }
+      a {
+        color: #F92672;
+        text-decoration: none;
+      }
+      .task {
+        float: right;
+        font-size: 0.9em;
+        padding-top: 0.6em;
+      }
+      .task a {
+        color: #080;
+        text-decoration: none;
+      }
+      .right {
+        float: right;
+        margin-left: 1em;
+      }
+      .pushdown {
+        margin-top: 12em;
+      }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+     }
+
+     .image img {
+       width: 15em;
+       height: auto;
+     }
+
+     .image2 img {
+       height: 20em;
+       widht: auto;
+     }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle, inverse
+
+### Introduction to
+# Serverless Architecture
+
+#### by [@selvakn](http://twitter.com/selvakn)
+
+---
+
+# About me
+
+.right[![Selva](http://s.gravatar.com/avatar/981c62da5b61c6924ef2d5b7fba6efca?s=120)]
+
+#### Developer / Tech Principal @ [Thoughtworks](thoughtworks.com)
+#### Ruby, JavaScript, Scala guy (mostly).
+#### #github / #twitter - [@selvakn]()
+---
+
+# Agenda
+
+- #### History / Evolution
+- #### So what is Serverless Architecture
+- #### Applications
+- #### What are the options?
+- #### Tools to manage
+- #### Demo
+- #### Limitations
+- #### Questions?
+
+---
+
+name: evolution
+# Evolution of Ops
+
+---
+
+template: evolution
+
+- Inhouse servers - racks, towers, etc
+
+.center.image[![Rack](images/racks-of-servers.jpg)]
+
+---
+
+template: evolution
+- Inhouse servers - racks, towers, etc
+
+- The Cloud
+
+.center.image[![Cloud](images/cloud.jpg)]
+
+---
+
+template: evolution
+- Inhouse servers - racks, towers, etc
+
+- The Cloud
+  - Virtualization
+
+  - IAAS (Amazon, Rackspace, Linode, etc)
+
+  - PAAS (Heroku, Google AppEngine, etc)
+
+  - BAAS (Firebase, Parse?!, etc)
+
+---
+
+template: evolution
+  - Inhouse servers - racks, towers, etc
+
+  - The Cloud
+    - Virtualization
+
+    - IAAS (Amazon, Rackspace, Linode, etc)
+
+    - PAAS (Heroku, Google AppEngine, etc)
+
+    - BAAS (Firebase, Parse?!, etc)
+
+  - Containerization
+.center[![Containers](images/containers.jpg)]
+
+---
+
+template: evolution
+  - Inhouse servers - racks, towers, etc
+
+  - The Cloud
+    - Virtualization
+
+    - IAAS (Amazon, Rackspace, Linode, etc)
+
+    - PAAS (Heroku, Google AppEngine, etc)
+
+    - BAAS (Firebase, Parse?!, etc)
+
+  - Containerization
+    - docker
+    - rkt
+    - opencontainers/runc
+
+???
+
+BAAS - difficult to customize the backend logic
+
+---
+
+# Serverless Architecture
+
+  - Comes into existence on request and disappears immediately after use
+
+  - Event based
+
+  - Independent actions/functions
+
+  - Fully managed, highly available, scalable
+
+  - No upgrades, security patches to the OS
+
+  - Based on containers - but completely transparent
+
+  - Reduces cost
+
+
+???
+
+SysOps -> DevOps -> NoOps
+
+
+Monolith -> Microserves -> Nanocompute units
+
+---
+
+# Serverless Architecture
+
+### But how do I run my app?
+
+  - Upload your code / artifact
+
+  - Setup the triggers (events)
+    - A file uploaded
+    - A message pushed into a queue
+    - Someone trying to login
+    - Or Even a HTTP endpoint !
+
+  - The platform runs the code when triggered
+
+  - Pay just for the compute time used (not for the server idle time)
+
+---
+
+template: evolution
+.center[Pre-Virtualization vs Post-Virtualization]
+.center.sub[borrowed from a presentation given by Bill Baker from Microsoft]
+
+.image[![](images/pus.jpg)]
+.right.image[![](images/cattle.jpg)]
+
+???
+Name them - numner them
+
+Take care of them - get rid of it and get another one
+
+--
+.center[Serverless Architecture]
+.image.center[![Minnion](images/minnion.jpg)]
+
+
+---
+
+# Serverless Architecture
+
+.center.image2[![](images/m2.png)]
+
+???
+Have a task? Tell them to do it
+
+---
+
+# Serverless Architecture
+
+.center.image2[![](images/m1.png)]
+
+???
+They will finish it (some how)
+
+---
+class: center, middle
+# Options
+---
+
+# Amazon Lambda
+
+.right.image[![lambda](images/lambda.png)]
+
+- NodeJS, Python, Java
+
+- Triggers / Events
+  - S3
+  - DynamoDB
+  - SQS
+  - SNS
+  - IOT
+  - Kinesis
+  - **Amazon API gateway**
+
+.center.image[![](http://docs.aws.amazon.com/lambda/latest/dg/images/s3-admin-iser-walkthrough-20.png)]
+
+???
+
+Announced in 2014
+
+Limitations
+    Maximum execution time is 300 seconds
+    Only javascript, python, or java
+    512 MB of /tmp
+    request, response payload of 6MB
+    100 concurrent excecutions by default
+    1024 process, threads, file descriptors
+
+---
+
+# iron.io
+
+.right.image[![ironio](images/ironio.png)]
+
+- ironworker - triggers
+  - queue (iron mq)
+  - http post
+  - Another iron worker
+  - Ruby, Python, PHP, Java, .Net, Node js, Go and more
+
+- Project Kratos (work in progress)
+  - Run AmazonLambda in your cloud
+  - No vendor lockin
+
+???
+Been there from 2012
+
+---
+
+# Others
+
+### hook.io
+  - Dozen of languages
+
+### webscript.io
+  - Lua
+
+### openwhisk from IBM
+
+### Google cloud function (alpha)
+  - Integrated with google cloud storage & pub/sub
+
+### Azure - web jobs
+
+???
+
+Google launches container cluster in the background
+
+---
+
+# Tools
+
+### [serverless.com](www.serverless.com)
+- Feature rich
+- Run/test AWS Lambda functions locally, or remotely
+- Bunch of plugins
+
+### [apex.run](apex.run)
+- Provided support for non aws supported languages like GoLang (through shims)
+
+???
+build, deploy, and manage AWS Lambda functions with ease
+
+---
+class: center, middle
+# Demo
+#### Amazon Lambda
+
+---
+class: center, middle
+
+# Limitations
+
+???
+- Suitable for quickly bootstraping new applications, based on cloud integrations
+- Slow boot times - not an option - may be inefficient
+- Not a solution for all kinds of applications
+- Long running jobs ? 300 seconds limit
+- Concurrency - 100 with aws - Has to be manually increased with a phone call to AWS
+- Limitated languages
+
+---
+class: center, middle, inverse
+# Thankyou
+#### by [@selvakn](http://twitter.com/selvakn)
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
